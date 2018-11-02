@@ -1,0 +1,8 @@
+#!/bin/bash
+
+
+apt-get update
+apt-get purge "$(deborphan)"
+apt-get autoremove
+apt-get autoclean
+apt-get purge "$(dpkg -l | grep ^rc | awk '{print $2}')"

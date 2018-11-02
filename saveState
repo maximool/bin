@@ -1,0 +1,36 @@
+#!/bin/bash
+
+
+# Initializing
+cd "$HOME" || exit
+
+archive="save$(date '+_%Y_%m_%d').zip"
+folders=(
+    documents
+    downloads
+    pictures
+    repositories
+    stuff
+    training
+)  # data & videos folders are too big
+
+# Actually compressing data
+for folder in "${folders[@]}"
+do
+    tar --dereference --gzip --verbose \
+        -cf "${folder}.tar.gz" \
+        "$folder"
+done
+
+# Gathering these tarballs into a single zip file
+zip "$archive" ./*.tar.gz
+
+# Moving to data dump folder
+if [ -e data ]
+then
+    mv "$archive" data/
+fi
+
+# Sending to remote server & removing the local archive
+# scp -B save.tar.gz $USER@37.187.124.60:data &>> logs/saveState.txt
+# rm save.tar.gz &>> logs/saveState.txt

@@ -1,0 +1,41 @@
+#!/bin/bash
+
+
+# Revamped version of both:
+# - http://www.linuxjournal.com/content/downloading-entire-web-site-wget
+# - http://www.tupp.me/2014/06/how-to-crawl-website-with-linux-wget.htmll
+
+# Extract the domain from the given url (see `--domain` option)
+domain=$(echo "$1" | sed -r 's,(https?|ftp|ssh|ssl)://(www\.)?,,')
+domain=$(echo "$domain" | sed -r 's,/$,,')
+
+# `man wget` (is `--restrict-file-names` still relevant ?)
+wget_options=" \
+    --adjust-extension \
+    --convert-links \
+    --domains $domain \
+    --execute robots=off \
+    --level 3 \
+    --limit-rate=900K \
+    --no-clobber \
+    --no-parent \
+    --page-requisites \
+    --random-wait \
+    --recursive \
+    --user-agent=mozilla \
+    --wait=1 \
+"
+
+# Proceed downloading with custom options
+if [ -z "$2" ]
+then
+    wget "$wget_options" "$1"
+else
+    case $2 in
+        "continue")
+        wget "$wget_options" --continue "$1";;
+
+        *)
+        echo "Invalid option command" && exit;;
+    esac
+fi
