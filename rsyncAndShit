@@ -1,0 +1,23 @@
+#!/bin/bash
+
+
+test -n "$1" || test -n "$2" || exit
+
+
+# enforce UNIX default permissions (644 for files and 775 for folders)
+# (two first lines might need sudo rights)
+find . -type d -print0 | xargs -0 chmod -R 775
+find . -type f -print0 | xargs -0 chmod 664
+
+time \
+rsync \
+    --archive \
+    --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
+    --compress \
+    --delete-after \
+    --partial \
+    --progress \
+    --verbose \
+    "$1" \
+    "$2"
+echo $?

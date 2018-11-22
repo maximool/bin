@@ -12,7 +12,7 @@ folders=(
     repositories
     stuff
     training
-)  # data & videos folders are too big
+)  # data, music & videos folders are too big
 
 # Actually compressing data
 for folder in "${folders[@]}"
@@ -32,5 +32,13 @@ then
 fi
 
 # Sending to remote server & removing the local archive
-# scp -B save.tar.gz $USER@37.187.124.60:data &>> logs/saveState.txt
-# rm save.tar.gz &>> logs/saveState.txt
+# TODO
+# * make sure this archive is encrypted
+# * hide
+#     * user name
+#     * IP address
+#     * path
+# scp -B "$archive" "$USER@37.187.124.60:/home/maxime/data"
+
+# Remove temporary archives
+rm ./*.tar.gz
