@@ -5,5 +5,5 @@ if [ -z "$1" ]
 then
     echo "No command given as first parameter"
 else
-    "$1" "$USER"@37.187.124.60
+    "$1" "maxime@${FLAT}"
 fi
