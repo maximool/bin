@@ -40,24 +40,39 @@ save() {
 
 
 load() {
-    # TODO
-    exit 1
-    rsync \
-        --archive \
-        --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
-        --compress \
-        --delete-after \
-        --partial \
-        --progress \
-        --verbose \
-        "$2" \
-        "$3"
+    # uncompressing last archive into a temporary directory
+    cd data || exit 1
+    tempdir="qzd${RANDOM}ase"
+    archive=$(ls save_* | tail -n 1)
+    mkdir "$tempdir"
+    unzip "$archive" -d "$tempdir"
+    cd "$tempdir" || exit 1
+
+    # actually merging files and folders
+    for folder in "${folders[@]}"
+    do
+        tar -zxf "$folder"
+        rsync \
+            --archive \
+            --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
+            --compress \
+            --delete-during \
+            --partial \
+            --progress \
+            --verbose \
+            "${folder}/*" \
+            "${HOME}/${folder}"
+    done
+
+    cd ..
+    rm -rf "$tempdir"
 }
 
 
 flat() {
     # TODO make sure this archive is encrypted
     exit 1
+
     scp -B "$archive" "${USER}@${FLAT}:/home/${USER}/data"
 }
 
@@ -65,27 +80,26 @@ flat() {
 fix() {
     # TODO
     exit 1
-    # (try to) fix permission problems
+
     # $2: source folder
 
     test -n "$2" || exit
 
     # enforce UNIX default permissions (644 for files and 775 for folders)
-    # (might need sudo rights)
-    cd "$2"
+    # (might require sudo rights)
+    cd "$2" || exit 1
     find . -type d -print0 | xargs -0 chmod -R 775
     find . -type f -print0 | xargs -0 chmod 664
 }
 
 
 help() {
-    # display available functions
     printf "Available options:
-    * save: archives folders
-    * load: unzips archive
+    * save: archives folders to ~/data
+    * load: unzips last archive from ~/data
     * flat: move the latest (daily) folder to the flatshare
     * fix:  try to fix permissions issues
-    * help: Display this help"
+    * help: Display this help\n"
 }
 
 
@@ -95,5 +109,6 @@ if [ -z "$1" ]
 then
     help
 else
-    time "$1"; echo $?
+    time "$1"
+    echo $?
 fi
