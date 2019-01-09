@@ -44,6 +44,11 @@ load() {
     cd data || exit 1
     tempdir="qzd${RANDOM}ase"
     archive=$(ls save_* | tail -n 1)
+    if [ -z "$archive" ]
+    then
+        echo 'No archive in found ~/data. Aborting.'
+        exit 1
+    fi
     mkdir "$tempdir"
     unzip "$archive" -d "$tempdir"
     cd "$tempdir" || exit 1
@@ -60,7 +65,7 @@ load() {
             --partial \
             --progress \
             --verbose \
-            "${folder}/*" \
+            "${folder}/" \
             "${HOME}/${folder}"
     done
 
