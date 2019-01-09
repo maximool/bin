@@ -42,31 +42,31 @@ save() {
 load() {
     # uncompressing last archive into a temporary directory
     cd data || exit 1
-    tempdir="qzd${RANDOM}ase"
     archive=$(ls save_* | tail -n 1)
     if [ -z "$archive" ]
     then
         echo 'No archive in found ~/data. Aborting.'
         exit 1
     fi
+    tempdir="qzd${RANDOM}ase"
     mkdir "$tempdir"
     unzip "$archive" -d "$tempdir"
     cd "$tempdir" || exit 1
-
     # actually merging files and folders
     for folder in "${folders[@]}"
     do
-        tar -zxf "$folder"
+        tar -zxf "${folder}.tar.gz"
         rsync \
             --archive \
-            --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
             --compress \
             --delete-during \
+            --delete-excluded \
             --partial \
             --progress \
             --verbose \
-            "${folder}/" \
+            "./${folder}/" \
             "${HOME}/${folder}"
+        # TODO need that `--chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \` flag ?
     done
 
     cd ..
