@@ -13,7 +13,11 @@ folders=(
 
 
 save() {
-    #
+    # gathering required folders' archives into a temporary folder
+    cd data || exit 1
+    tempdir="qzd${RANDOM}ase"
+    mkdir "$tempdir"
+    cd "$tempdir"
     archive="save$(date '+_%Y_%m_%d').zip"
 
     # actually compressing data
@@ -21,23 +25,17 @@ save() {
     do
         tar --dereference --gzip --verbose \
             -cf "${folder}.tar.gz" \
-            "$folder"
+            "../../${folder}"
     done
 
     # gathering these tarballs into a single zip file
     zip "$archive" ./*.tar.gz
 
-    # moving to data dump folder
-    if [ -e data ]
-    then
-        mv "$archive" data/
-    else
-        mkdir data
-        mv "$archive" data/
-    fi
-
-    # Remove temporary archives
+    # moving from tempdir to data dump folder and removing tempdir
     rm ./*.tar.gz
+    mv "$archive" ..
+    cd ..
+    rmdir "$tempdir"
 }
 
 
@@ -55,6 +53,7 @@ load() {
     mkdir "$tempdir"
     unzip "$archive" -d "$tempdir"
     cd "$tempdir" || exit 1
+
     # actually merging files and folders
     for folder in "${folders[@]}"
     do
