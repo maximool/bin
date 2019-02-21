@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+if [ -n "$1" ]
+then
+    from="$1"
+else
+    from="$PWD"
+fi
+
+find "$from" -type d -print0 | xargs -0 chmod 775  # TODO -R ?
+find "$from" -type f -print0 | xargs -0 chmod 664

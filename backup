@@ -83,22 +83,6 @@ flat() {
 }
 
 
-fix() {
-    # TODO finish if still useful, remove otherwise
-    exit 1
-
-    # $2: source folder
-
-    test -n "$2" || exit
-
-    # enforce UNIX default permissions (644 for files and 775 for folders)
-    # (might require sudo rights)
-    cd "$2" || exit 1
-    find . -type d -print0 | xargs -0 chmod -R 775
-    find . -type f -print0 | xargs -0 chmod 664
-}
-
-
 help() {
     # display help (rather self-explanatory ¯\_(ツ)_/¯)
     printf "Available options:
