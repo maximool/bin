@@ -12,30 +12,21 @@ folders=(
 )  # data, music & videos folders are too big
 
 
-save() {
-    # gathering required folders' archives into a temporary folder
-    cd data || exit 1
-    tempdir="qzd${RANDOM}ase"
-    mkdir "$tempdir"
-    cd "$tempdir"
-    archive="save$(date '+_%Y_%m_%d').zip"
+flat() {
+    # TODO make sure the backup archive is encrypted
+    exit 1
 
-    # actually compressing data
-    for folder in "${folders[@]}"
-    do
-        tar --dereference --gzip --verbose \
-            -cf "${folder}.tar.gz" \
-            "../../${folder}"
-    done
+    scp -B "$archive" "${USER}@${FLAT}:/home/${USER}/data"
+}
 
-    # gathering these tarballs into a single zip file
-    zip "$archive" ./*.tar.gz
 
-    # moving from tempdir to data dump folder and removing tempdir
-    rm ./*.tar.gz
-    mv "$archive" ..
-    cd ..
-    rmdir "$tempdir"
+help() {
+    # display help (rather self-explanatory ¯\_(ツ)_/¯)
+    printf "Available options:
+    * flat: move the latest (daily) folder to the flatshare
+    * help: displays this help
+    * load: unzips last archive from ~/data
+    * save: archives folders to ~/data\n"
 }
 
 
@@ -74,23 +65,30 @@ load() {
     rm -rf "$tempdir"
 }
 
+save() {
+    # gathering required folders' archives into a temporary folder
+    cd data || exit 1
+    tempdir="qzd${RANDOM}ase"
+    mkdir "$tempdir"
+    cd "$tempdir" || exit 1
+    archive="save$(date '+_%Y_%m_%d').zip"
 
-flat() {
-    # TODO make sure the backup archive is encrypted
-    exit 1
+    # actually compressing data
+    for folder in "${folders[@]}"
+    do
+        tar --dereference --gzip --verbose \
+            -cf "${folder}.tar.gz" \
+            "../../${folder}"
+    done
 
-    scp -B "$archive" "${USER}@${FLAT}:/home/${USER}/data"
-}
+    # gathering these tarballs into a single zip file
+    zip "$archive" ./*.tar.gz
 
-
-help() {
-    # display help (rather self-explanatory ¯\_(ツ)_/¯)
-    printf "Available options:
-    * help: Displays this help
-    * flat: move the latest (daily) folder to the flatshare
-    * fix:  try to fix permissions issues
-    * load: unzips last archive from ~/data
-    * save: archives folders to ~/data\n"
+    # moving from tempdir to data dump folder and removing tempdir
+    rm ./*.tar.gz
+    mv "$archive" ..
+    cd ..
+    rmdir "$tempdir"
 }
 
 
