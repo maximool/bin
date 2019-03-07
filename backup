@@ -21,6 +21,7 @@ flat() {
 
 
 help() {
+    # TODO bad idea to overload a builtin command ?
     # display help (rather self-explanatory ¯\_(ツ)_/¯)
     printf "Available options:
     * flat: move the latest (daily) folder to the flatshare
@@ -48,18 +49,21 @@ load() {
     # actually merging files and folders
     for folder in "${folders[@]}"
     do
-        tar -zxf "${folder}.tar.gz"
-        rsync \
-            --archive \
-            --compress \
-            --delete-during \
-            --delete-excluded \
-            --partial \
-            --progress \
-            --verbose \
-            "./${folder}/" \
-            "${HOME}/${folder}"
+        (
+            tar -zxf "${folder}.tar.gz"
+            rsync \
+                --archive \
+                --compress \
+                --delete-during \
+                --delete-excluded \
+                --partial \
+                --progress \
+                --verbose \
+                "./${folder}/" \
+                "${HOME}/${folder}"
+        ) &
     done
+    wait
 
     cd ..
     rm -rf "$tempdir"
@@ -78,8 +82,9 @@ save() {
     do
         tar --dereference --gzip --verbose \
             -cf "${folder}.tar.gz" \
-            "../../${folder}"
+            "../../${folder}" &
     done
+    wait
 
     # gathering these tarballs into a single zip file
     zip "$archive" ./*.tar.gz
