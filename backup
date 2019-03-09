@@ -58,7 +58,6 @@ load() {
                 --delete-excluded \
                 --partial \
                 --progress \
-                --verbose \
                 "./${folder}/" \
                 "${HOME}/${folder}"
         ) &
@@ -80,7 +79,7 @@ save() {
     # actually compressing data
     for folder in "${folders[@]}"
     do
-        tar --dereference --gzip --verbose \
+        tar --dereference --gzip \
             -cf "${folder}.tar.gz" \
             "../../${folder}" &
     done
