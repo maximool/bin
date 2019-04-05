@@ -1,5 +1,0 @@
-#!/bin/bash
-
-
-# https://www.linuxquestions.org/questions/debian-26/how-to-disable-system-bell-in-debian-9-stretch-xfce-4175608842/
-xset b off
