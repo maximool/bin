@@ -8,5 +8,5 @@ else
     from="$PWD"
 fi
 
-find "${from}/" -type d -print0 | xargs -0 chmod 775
-find "${from}/" -type f -print0 | xargs -0 chmod 664
+find "${from}/" -type d -print0 | xargs -0 chmod 755
+find "${from}/" -type f -print0 | xargs -0 chmod 644
