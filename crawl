@@ -2,8 +2,11 @@
 
 
 # Revamped version of both:
+# - http://sametmax.com/la-blog-ferme
 # - http://www.linuxjournal.com/content/downloading-entire-web-site-wget
-# - http://www.tupp.me/2014/06/how-to-crawl-website-with-linux-wget.htmll
+# - http://www.tupp.me/2014/06/how-to-crawl-website-with-linux-wget.html
+
+# Good example of use: `wget -m -k -p -c -E http://sametmax.com` ?
 
 # Extract the domain from the given url (see `--domain` option)
 domain=$(echo "$1" | sed -r 's,(https?|ftp|ssh|ssl)://(www\.)?,,')
