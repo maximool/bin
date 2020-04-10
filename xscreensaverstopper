@@ -40,7 +40,7 @@ checkFullscreen()
     done
 }
 
-while sleep $((90)); do
+while sleep $((240)); do
     checkFullscreen
 done
 
