@@ -41,6 +41,7 @@ checkFullscreen()
 }
 
 while sleep $((240)); do
+    # actually check there: https://github.com/jamcnaughton/useful-linux-scripts/blob/master/xscreensaver/xscreensaverstopper.sh
     checkFullscreen
 done
 
