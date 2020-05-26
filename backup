@@ -8,7 +8,6 @@ folders=(
     pictures
     repositories
     stuff
-    training
 )  # data, music & videos folders are too big
 
 
