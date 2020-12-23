@@ -8,6 +8,7 @@ folders=(
     pictures
     repositories
     stuff
+    zotero
 )  # data, music & videos folders are too big
 
 
