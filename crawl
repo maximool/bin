@@ -2,12 +2,12 @@
 
 
 # Revamped version of both:
-# - http://sametmax.com/la-blog-ferme
-# - http://www.linuxjournal.com/content/downloading-entire-web-site-wget
-# - http://www.tupp.me/2014/06/how-to-crawl-website-with-linux-wget.html
+# - https://sametmax.com/la-blog-ferme/
+# - https://www.linuxjournal.com/content/downloading-entire-web-site-wget
+# - https://www.tupp.me/2014/06/how-to-crawl-website-with-linux-wget.html
 
 # Good examples of use
-# * `wget -m -k -p -c -E http://sametmax.com` ?
+# * `wget -m -k -p -c -E https://sametmax.com` ?
 # * `wget -m -k -p -c -E https://librecours.net/parcours/na17` ?
 # * `wget -m -k -p -c -E https://stph.scenari-community.org/dwh` ?
 
