@@ -9,7 +9,7 @@ folders=(
     repositories
     stuff
     zotero
-)  # data, music & videos folders are too big
+)  # data, music & videos folders are usually too big
 
 
 flat() {
@@ -81,6 +81,7 @@ save() {
     do
         tar --dereference --gzip \
             -cf "${folder}.tar.gz" \
+            --exclude="node_modules/*" \
             "../../${folder}" &
     done
     wait
