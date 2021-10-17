@@ -2,7 +2,10 @@
 
 
 apt-get update
-apt-get purge "$(deborphan)"
-apt-get autoremove
-apt-get autoclean
-apt-get purge "$(dpkg -l | grep ^rc | awk '{print $2}')"
+apt-get -y purge "$(deborphan)"
+apt-get -y autoremove
+apt-get -y autoclean
+for pckg in "$(dpkg -l | grep ^rc | awk '{print $2}')"
+do
+    apt-get -y purge "$pckg"
+done

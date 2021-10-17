@@ -34,6 +34,8 @@ help() {
 load() {
     # uncompressing last archive into a temporary directory
     # TODO need that `--chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \` flag ?
+    # TODO log file
+    # TODO keep track of rsync return values and fire an clear error if need be
     cd data || exit 1
     archive=$(ls save_* | tail -n 1)
     if [ -z "$archive" ]
@@ -70,6 +72,7 @@ load() {
 
 save() {
     # gathering required folders' archives into a temporary folder
+    # TODO log file
     cd data || exit 1
     tempdir="qzd${RANDOM}ase"
     mkdir "$tempdir"
