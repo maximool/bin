@@ -1,9 +1,0 @@
-#!/bin/bash
-
-
-if [ -z "$1" ]
-then
-    echo "No command given as first parameter"
-else
-    "$1" "${USER}@${FLAT}"
-fi

@@ -1,4 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# https://sharats.me/posts/shell-script-best-practices/
+set -o errexit
+set -o nounset
+set -o pipefail
+# set -o xtrace
 
 
 # Revamped version of both:
@@ -33,7 +39,7 @@ wget_options=" \
 "
 
 # Proceed downloading with custom options
-if [ -z "$2" ]
+if [[ -z "${2-}" ]]
 then
     wget "$wget_options" "$1"
 else

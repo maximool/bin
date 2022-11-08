@@ -1,4 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# https://sharats.me/posts/shell-script-best-practices/
+set -o errexit
+set -o nounset
+set -o pipefail
+# set -o xtrace
 
 
 # content to look for (from $HOME)
@@ -38,7 +44,8 @@ load() {
     # TODO keep track of rsync return values and fire an clear error if need be
     cd data || exit 1
     archive=$(ls save_* | tail -n 1)
-    if [ -z "$archive" ]
+    if [[ -z "${archive-}" ]]
+
     then
         echo 'No archive in found ~/data. Aborting.'
         exit 1
@@ -102,7 +109,7 @@ save() {
 
 cd "$HOME" || exit
 
-if [ -z "$1" ]
+if [[ -z "${1-}" ]]
 then
     help
 else
