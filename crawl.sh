@@ -21,33 +21,24 @@ set -o pipefail
 domain=$(echo "$1" | sed -r 's,(https?|ftp|ssh|ssl)://(www\.)?,,')
 domain=$(echo "$domain" | sed -r 's,/$,,')
 
-# `man wget` (is `--restrict-file-names` still relevant ?)
-wget_options=" \
-    --adjust-extension \
-    --convert-links \
-    --domains $domain \
-    --execute robots=off \
-    --level 3 \
-    --limit-rate=900K \
-    --no-clobber \
-    --no-parent \
-    --page-requisites \
-    --random-wait \
-    --recursive \
-    --user-agent=mozilla \
-    --wait=1 \
-"
-
-# Proceed downloading with custom options
-if [[ -z "${2-}" ]]
+# Proceed with downloading with custom options
+if [[ -z "${1-}" ]]
 then
-    wget "$wget_options" "$1"
+    echo 'Invalid option command (no website given)' && exit
 else
-    case $2 in
-        "continue")
-        wget "$wget_options" --continue "$1";;
-
-        *)
-        echo "Invalid option command" && exit;;
-    esac
+    wget \
+        --adjust-extension \
+        --continue \
+        --convert-links \
+        --domains="$domain" \
+        --execute robots=off \
+        --level 5 \
+        --limit-rate=900K \
+        --no-parent \
+        --page-requisites \
+        --random-wait \
+        --recursive \
+        --user-agent=mozilla \
+        --wait=1 \
+        "$1"
 fi
