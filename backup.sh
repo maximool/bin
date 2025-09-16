@@ -8,14 +8,15 @@ set -o pipefail
 
 
 # content to look for (from $HOME)
+# data, music & videos folders are usually too big
+# zotero has not changed in a while
 folders=(
     documents
     downloads
     pictures
     repositories
     stuff
-    zotero
-)  # data, music & videos folders are usually too big
+)
 
 
 flat() {
